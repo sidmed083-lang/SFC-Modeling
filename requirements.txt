@@ -1,0 +1,8 @@
+# Runtime + dashboard (for development use: pip install -e ".[dashboard,dev]")
+numpy>=1.24
+pandas>=2.0
+scipy>=1.10
+sympy>=1.12
+networkx>=3.0
+streamlit>=1.35
+plotly>=5.20

@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: "If you use this software, please cite it as below."
+title: "SFC-Modeling"
+version: 0.1.0
+type: software
+license: MIT
+authors:
+  - name: "SFC-Modeling contributors"
+repository-code: "https://github.com/<your-user>/SFC-Modeling"
+references:
+  - type: book
+    title: "Monetary Economics: An Integrated Approach to Credit, Money, Income, Production and Wealth"
+    authors:
+      - family-names: Godley
+        given-names: Wynne
+      - family-names: Lavoie
+        given-names: Marc
+    publisher:
+      name: Palgrave Macmillan
+    year: 2007

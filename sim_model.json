@@ -1,0 +1,134 @@
+{
+  "name": "SIM",
+  "description": "Godley & Lavoie Model SIM: simplest SFC model with government money.",
+  "equations": [
+    {
+      "lhs": "Y",
+      "rhs": "C + G",
+      "kind": "identity",
+      "description": "Output = consumption + government spending"
+    },
+    {
+      "lhs": "YD",
+      "rhs": "Y - T",
+      "kind": "identity",
+      "description": "Disposable income"
+    },
+    {
+      "lhs": "T",
+      "rhs": "theta*Y",
+      "kind": "behavioral",
+      "description": "Taxes (wages = output)"
+    },
+    {
+      "lhs": "C",
+      "rhs": "alpha1*YD + alpha2*Hh(-1)",
+      "kind": "behavioral",
+      "description": "Consumption out of income and wealth"
+    },
+    {
+      "lhs": "N",
+      "rhs": "Y/W",
+      "kind": "behavioral",
+      "description": "Employment"
+    },
+    {
+      "lhs": "Hh",
+      "rhs": "Hh(-1) + YD - C",
+      "kind": "identity",
+      "description": "Households' money holdings"
+    },
+    {
+      "lhs": "Hs",
+      "rhs": "Hs(-1) + G - T",
+      "kind": "identity",
+      "description": "Money supplied by government deficits"
+    }
+  ],
+  "parameters": {
+    "alpha1": 0.6,
+    "alpha2": 0.4,
+    "theta": 0.2
+  },
+  "exogenous": {
+    "G": 20.0,
+    "W": 1.0
+  },
+  "initial": {
+    "Hh": 0.0,
+    "Hs": 0.0
+  },
+  "consistency_checks": [
+    "Hs - Hh"
+  ],
+  "accounting": {
+    "sectors": [
+      "Households",
+      "Production",
+      "Government"
+    ],
+    "transactions": [
+      {
+        "name": "Consumption",
+        "kind": "current",
+        "entries": {
+          "Households": "-C",
+          "Production": "C"
+        }
+      },
+      {
+        "name": "Government expenditure",
+        "kind": "current",
+        "entries": {
+          "Government": "-G",
+          "Production": "G"
+        }
+      },
+      {
+        "name": "Income (wages)",
+        "kind": "current",
+        "entries": {
+          "Households": "Y",
+          "Production": "-Y"
+        }
+      },
+      {
+        "name": "Taxes",
+        "kind": "current",
+        "entries": {
+          "Households": "-T",
+          "Government": "T"
+        }
+      },
+      {
+        "name": "Money",
+        "kind": "financial",
+        "entries": {
+          "Households": "-(Hh - Hh(-1))",
+          "Government": "Hs - Hs(-1)"
+        }
+      }
+    ],
+    "instruments": [
+      {
+        "name": "Money",
+        "kind": "financial",
+        "entries": {
+          "Households": "Hh",
+          "Government": "-Hs"
+        }
+      }
+    ],
+    "revaluations": {},
+    "nonfinancial_acquisitions": {},
+    "classification": null
+  },
+  "descriptions": {
+    "alpha1": "Propensity to consume out of income",
+    "alpha2": "Propensity to consume out of wealth",
+    "theta": "Tax rate",
+    "G": "Government expenditure",
+    "W": "Wage rate"
+  },
+  "random_seed": 12345
+}

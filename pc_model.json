@@ -1,0 +1,190 @@
+{
+  "name": "PC",
+  "description": "Godley & Lavoie Model PC: portfolio choice between money and bills.",
+  "equations": [
+    {
+      "lhs": "Y",
+      "rhs": "C + G",
+      "kind": "identity",
+      "description": ""
+    },
+    {
+      "lhs": "YD",
+      "rhs": "Y - T + r(-1)*Bh(-1)",
+      "kind": "identity",
+      "description": "Disposable income incl. interest"
+    },
+    {
+      "lhs": "T",
+      "rhs": "theta*(Y + r(-1)*Bh(-1))",
+      "kind": "behavioral",
+      "description": "Income tax"
+    },
+    {
+      "lhs": "V",
+      "rhs": "V(-1) + YD - C",
+      "kind": "identity",
+      "description": "Household wealth"
+    },
+    {
+      "lhs": "C",
+      "rhs": "alpha1*YD + alpha2*V(-1)",
+      "kind": "behavioral",
+      "description": ""
+    },
+    {
+      "lhs": "Hh",
+      "rhs": "V - Bh",
+      "kind": "identity",
+      "description": "Money = wealth not held in bills"
+    },
+    {
+      "lhs": "Bh",
+      "rhs": "V*(lambda0 + lambda1*r - lambda2*YD/V)",
+      "kind": "behavioral",
+      "description": "Bill demand (portfolio choice)"
+    },
+    {
+      "lhs": "Bs",
+      "rhs": "Bs(-1) + G + r(-1)*Bs(-1) - T - r(-1)*Bcb(-1)",
+      "kind": "identity",
+      "description": "Government borrowing"
+    },
+    {
+      "lhs": "Bcb",
+      "rhs": "Bs - Bh",
+      "kind": "identity",
+      "description": "Central bank takes up the residual"
+    },
+    {
+      "lhs": "Hs",
+      "rhs": "Hs(-1) + Bcb - Bcb(-1)",
+      "kind": "identity",
+      "description": "Money issued against bills"
+    }
+  ],
+  "parameters": {
+    "alpha1": 0.6,
+    "alpha2": 0.4,
+    "theta": 0.2,
+    "lambda0": 0.635,
+    "lambda1": 0.05,
+    "lambda2": 0.01
+  },
+  "exogenous": {
+    "G": 20.0,
+    "r": 0.025
+  },
+  "initial": {
+    "V": 0.0,
+    "Bh": 0.0,
+    "Bs": 0.0,
+    "Bcb": 0.0,
+    "Hs": 0.0,
+    "Hh": 0.0
+  },
+  "consistency_checks": [
+    "Hs - Hh",
+    "Hs - Bcb"
+  ],
+  "accounting": {
+    "sectors": [
+      "Households",
+      "Production",
+      "Government",
+      "CentralBank"
+    ],
+    "transactions": [
+      {
+        "name": "Consumption",
+        "kind": "current",
+        "entries": {
+          "Households": "-C",
+          "Production": "C"
+        }
+      },
+      {
+        "name": "Government expenditure",
+        "kind": "current",
+        "entries": {
+          "Government": "-G",
+          "Production": "G"
+        }
+      },
+      {
+        "name": "Income (wages)",
+        "kind": "current",
+        "entries": {
+          "Households": "Y",
+          "Production": "-Y"
+        }
+      },
+      {
+        "name": "Interest on bills",
+        "kind": "current",
+        "entries": {
+          "Households": "r(-1)*Bh(-1)",
+          "Government": "-r(-1)*Bs(-1)",
+          "CentralBank": "r(-1)*Bcb(-1)"
+        }
+      },
+      {
+        "name": "Central bank profits",
+        "kind": "current",
+        "entries": {
+          "Government": "r(-1)*Bcb(-1)",
+          "CentralBank": "-r(-1)*Bcb(-1)"
+        }
+      },
+      {
+        "name": "Taxes",
+        "kind": "current",
+        "entries": {
+          "Households": "-T",
+          "Government": "T"
+        }
+      },
+      {
+        "name": "Money",
+        "kind": "financial",
+        "entries": {
+          "Households": "-(Hh - Hh(-1))",
+          "CentralBank": "Hs - Hs(-1)"
+        }
+      },
+      {
+        "name": "Bills",
+        "kind": "financial",
+        "entries": {
+          "Households": "-(Bh - Bh(-1))",
+          "Government": "Bs - Bs(-1)",
+          "CentralBank": "-(Bcb - Bcb(-1))"
+        }
+      }
+    ],
+    "instruments": [
+      {
+        "name": "Money",
+        "kind": "financial",
+        "entries": {
+          "Households": "Hh",
+          "CentralBank": "-Hs"
+        }
+      },
+      {
+        "name": "Bills",
+        "kind": "financial",
+        "entries": {
+          "Households": "Bh",
+          "Government": "-Bs",
+          "CentralBank": "Bcb"
+        }
+      }
+    ],
+    "revaluations": {},
+    "nonfinancial_acquisitions": {},
+    "classification": null
+  },
+  "descriptions": {},
+  "random_seed": 12345
+}
